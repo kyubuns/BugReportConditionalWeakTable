@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -29,6 +28,9 @@ public class Test : MonoBehaviour
 
     void Update()
     {
+        var a = new Person { Id = UnityEngine.Random.Range(0, 100000), Name = $"{UnityEngine.Random.Range(0, 100000)}" };
+        _locations.Add(a, "Test");
+
         Debug.Log($"{Time.frameCount}");
         foreach (var p in _people)
         {
