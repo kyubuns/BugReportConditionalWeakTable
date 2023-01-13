@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private readonly List<int[]> _keys = new();
-    private readonly ConditionalWeakTable<int[], object> _test = new();
+    private readonly List<int[]> _keys = new List<int[]>();
+    private readonly ConditionalWeakTable<int[], object> _test = new ConditionalWeakTable<int[], object>();
 
     public void Update()
     {
