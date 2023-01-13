@@ -1,49 +1,39 @@
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    private Person[] _people;
-    private ConditionalWeakTable<Person, string> _locations;
+    private readonly List<int[]> _keys = new();
+    private readonly ConditionalWeakTable<int[], object> _test = new();
 
-    public void Start()
+    public void Update()
     {
-        _people = new[]
+        Debug.Log($"== {Time.frameCount}");
+
+        for (var k = 0; k < 1000; ++k)
         {
-            new Person { Id = 1, Name = "Jurian Naul" },
-            new Person { Id = 2, Name = "Thomas Bent" },
-            new Person { Id = 3, Name = "Ellen Carson" },
-            new Person { Id = 4, Name = "Katrina Lauran" },
-            new Person { Id = 5, Name = "Monica Ausbach" },
-        };
+            var i = Random.Range(0, 10000000);
+            Add(new[] { i }, new TypeA { Name = $"Test{i}" });
+        }
 
-        _locations = new ConditionalWeakTable<Person, string>();
-
-        _locations.Add(_people[0], "Shinon");
-        _locations.Add(_people[1], "Lance");
-        _locations.Add(_people[2], "Pidona");
-        _locations.Add(_people[3], "Loanne");
-        _locations.Add(_people[4], "Loanne");
-    }
-
-    void Update()
-    {
-        var a = new Person { Id = UnityEngine.Random.Range(0, 100000), Name = $"{UnityEngine.Random.Range(0, 100000)}" };
-        _locations.Add(a, "Test");
-
-        Debug.Log($"{Time.frameCount}");
-        foreach (var p in _people)
+        for (var k = 0; k < 10; ++k)
         {
-            if (_locations.TryGetValue(p, out var location))
-            {
-                Debug.Log(p.Name + " at " + location);
-            }
+            var i = _keys[Random.Range(0, _keys.Count)];
+            var b = (TypeA) _test.GetValue(i, _ => null);
+            Debug.Log($"{b?.Name}");
         }
     }
+
+    private void Add(int[] i, object o)
+    {
+        _test.Add(i, o);
+        _keys.Add(i);
+    }
 }
 
-public class Person
+public class TypeA
 {
-    public int Id { get; set; }
     public string Name { get; set; }
 }
+
